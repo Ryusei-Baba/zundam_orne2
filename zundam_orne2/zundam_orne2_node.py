@@ -17,9 +17,22 @@ class ZundamSubscriber(Node):
         self.vel = Twist()
                
     def callback(self, Twist): 
-        if Twist.linear.x > 0.2:
-            playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/001_ずんだもん（ノーマル）_ロボットが動くのだ.wav"))
-        return Twist
+        if Twist.linear.x == 0.0:
+            playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/004_ずんだもん（ノーマル）_どいてニャーーーー….wav"))
+            return Twist
+        elif Twist.linear.x > 0.2 and Twist.angular.z < 0.2 and Twist.angular.z > -0.2:
+            playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/001_ずんだもん（ノーマル）_まっすぐ進むのだ.wav"))
+            return Twist
+        elif Twist.angular.z < -0.5:
+            playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/002_ずんだもん（ノーマル）_右に曲がるのだ.wav"))
+            return Twist
+        elif Twist.angular.z > 0.5:
+            playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/003_ずんだもん（ノーマル）_左に曲がるのだ.wav"))
+            return Twist
+        else:
+            return Twist
+
+    
         # self.get_logger().info("Velocity: Linear=%f angular=%f" % (Twist.linear.x,Twist.angular.z)) 
    
    
@@ -27,15 +40,10 @@ def main():
     rclpy.init()
     node = ZundamSubscriber()
     try:
-        rclpy.spin(node) 
+        rclpy.spin_once(node) 
     except KeyboardInterrupt:
         print("Ctrl+C が押されました．")
     finally:
         rclpy.shutdown()
         print('プログラム終了')
-# def main(args=None):
-#     rclpy.init(args=args)
-#     node = ZundamSubscriber()
-#     rclpy.spin(node)
-#     node.destory_node()
-#     rclpy.shutdown()
+
