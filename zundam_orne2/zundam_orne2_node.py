@@ -13,7 +13,7 @@ from playsound import playsound
 class ZundamSubscriber(Node): 
     def __init__(self):
         super().__init__('zundam_subscriber_node') 
-        self.subscription = self.create_subscription(Twist,'cmd_vel', self.callback, 10)
+        self.subscription = self.create_subscription(Twist,'cmd_vel', self.callback, 1)
         self.vel = Twist()
         self.flg = 0
                
