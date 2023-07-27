@@ -14,34 +14,60 @@ class ZundamSubscriber(Node):
     def __init__(self):
         super().__init__('zundam_subscriber_node') 
         self.subscription = self.create_subscription(Twist,'cmd_vel', self.callback, 1)
+        self.create_timer(0.01, self.timer_callback)
         self.vel = Twist()
         self.flg = 0
+        self.time = 0
                
+    def timer_callback(self):
+        self.time += 0.01
+
     def callback(self, Twist): 
-        if self.flg == 0:
-            if Twist.linear.x == 0.0:
+        if self.time <= 5:
+            if self.flg != 1 and Twist.linear.x == 0.0:
                 playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/004_ずんだもん（ノーマル）_お休み中なのだ.wav"))
                 self.flg = 1
+                self.time = 0
                 return Twist
-            elif Twist.linear.x > 0.2 and Twist.angular.z < 0.2 and Twist.angular.z > -0.2:
+            elif self.flg != 2 and Twist.linear.x > 0.2 and Twist.angular.z < 0.2 and Twist.angular.z > -0.2:
                 playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/001_ずんだもん（ノーマル）_まっすぐ進むのだ.wav"))
-                self.flg = 1
+                self.flg = 2
+                self.time = 0
                 return Twist
-            elif Twist.angular.z <= -0.2:
+            elif self.flg != 3 and Twist.angular.z <= -0.2:
                 playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/002_ずんだもん（ノーマル）_右に曲がるのだ.wav"))
-                self.flg = 1
+                self.flg = 3
+                self.time = 0
                 return Twist
-            elif Twist.angular.z >= 0.2:
+            elif self.flg != 4 and Twist.angular.z >= 0.2:
                 playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/003_ずんだもん（ノーマル）_左に曲がるのだ.wav"))
-                self.flg = 1
+                self.flg = 4
+                self.time = 0
                 return Twist
-            else:
+        else:
+            if self.flg == 1:
+                playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/004_ずんだもん（ノーマル）_お休み中なのだ.wav"))
+                self.time = 0
                 return Twist
-        elif self.flg == 1:
-            self.get_logger().info("Velocity: Linear=%f angular=%f" % (Twist.linear.x,Twist.angular.z)) 
-            time.sleep(5)    # default5秒
-            self.flg = 0
-            return Twist
+            elif self.flg == 2:
+                playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/001_ずんだもん（ノーマル）_まっすぐ進むのだ.wav"))
+                self.time = 0
+                return Twist
+            elif self.flg == 3:
+                playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/002_ずんだもん（ノーマル）_右に曲がるのだ.wav"))
+                self.time = 0
+                return Twist
+            elif self.flg == 4:
+                playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/003_ずんだもん（ノーマル）_左に曲がるのだ.wav"))
+                self.time = 0
+                return Twist
+        
+        self.get_logger().info("Velocity: Linear=%f angular=%f" % (Twist.linear.x,Twist.angular.z))
+        # elif self.flg == 1:
+        #     self.get_logger().info("Velocity: Linear=%f angular=%f" % (Twist.linear.x,Twist.angular.z)) 
+        #     time.sleep(5)    # default5秒
+        #     self.flg = 0
+        #     return Twist
 
    
 def main():
