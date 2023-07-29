@@ -6,9 +6,14 @@ ROS 2です．Topicを受け取るとずんだもんが喋ります．</br>
 ## install
 ```
 pip3 install playsound
+cd ~/ws/src/
 git clone
 cd ~/ws/
-rosdep install -i --from-path src -y
 colcon build --symlink-install
 source install/setup.bash
+```
+
+## run
+```
+ros2 run zundam_orne2 zundam_orne2_node
 ```
