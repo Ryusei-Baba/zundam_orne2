@@ -7,7 +7,7 @@ ROS 2です．Topicを受け取るとずんだもんが喋ります．</br>
 ```
 pip3 install playsound
 cd ~/ws/src/
-git clone
+git clone https://github.com/Ryusei-Baba/zundam_orne2.git
 cd ~/ws/
 colcon build --symlink-install
 source install/setup.bash
