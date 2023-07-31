@@ -23,7 +23,7 @@ class ZundamSubscriber(Node):
         self.time += 0.01
 
     def callback(self, Twist): 
-        if self.time <= 5:
+        if self.time <= 10:
             if self.flg != 1 and Twist.linear.x == 0.0 and Twist.angular.z == 0.0:
                 playsound(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../src/zundam_orne2/voice/004_ずんだもん（ノーマル）_お休み中なのだ.wav"))
                 self.flg = 1
