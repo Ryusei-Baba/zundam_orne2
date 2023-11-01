@@ -1,4 +1,4 @@
-# zundam_ros2
+# zundam_orne2
 ROS 2です．Topicを受け取るとずんだもんが喋ります．</br>
 クレジット　VOICEVOX:ずんだもん [VOICEVOX 公式ページ](https://voicevox.hiroshiba.jp/)</br>
 
